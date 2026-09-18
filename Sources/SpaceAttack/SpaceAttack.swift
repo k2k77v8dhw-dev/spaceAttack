@@ -65,6 +65,10 @@ public struct Projectile: Equatable {
 }
 
 public struct GameState {
+    private let offscreenLeftMargin = 50.0
+    private let offscreenRightMargin = 700.0
+    private let offscreenVerticalMargin = 50.0
+
     public private(set) var arenaSize: Vector2D
     public private(set) var player: PlayerShip
     public private(set) var asteroids: [Asteroid]
@@ -135,13 +139,13 @@ public struct GameState {
         }
 
         asteroids.removeAll { asteroid in
-            asteroid.position.x < -50 || asteroid.position.x > arenaSize.x + 50 ||
-            asteroid.position.y < -50 || asteroid.position.y > arenaSize.y + 50
+            asteroid.position.x < -offscreenLeftMargin || asteroid.position.x > arenaSize.x + offscreenRightMargin ||
+            asteroid.position.y < -offscreenVerticalMargin || asteroid.position.y > arenaSize.y + offscreenVerticalMargin
         }
 
         enemies.removeAll { enemy in
-            enemy.position.x < -50 || enemy.position.x > arenaSize.x + 50 ||
-            enemy.position.y < -50 || enemy.position.y > arenaSize.y + 50
+            enemy.position.x < -offscreenLeftMargin || enemy.position.x > arenaSize.x + offscreenRightMargin ||
+            enemy.position.y < -offscreenVerticalMargin || enemy.position.y > arenaSize.y + offscreenVerticalMargin
         }
 
         projectiles.removeAll { projectile in
