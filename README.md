@@ -19,4 +19,9 @@ swift test
 ```
 
 ## Run on iOS
-Open the package in Xcode on macOS and run the iOS app target created from `SpaceAttackApp`.
+You can now open either setup in Xcode on macOS:
+
+- `Package.swift` for the Swift Package workflow.
+- `SpaceAttack.xcodeproj` for a standard Xcode iOS app project.
+
+For the Xcode project, choose an iOS simulator and run the `SpaceAttack` target.
