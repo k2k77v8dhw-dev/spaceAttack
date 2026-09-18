@@ -19,10 +19,12 @@ public struct Vector2D: Equatable {
 public struct PlayerShip: Equatable {
     public var position: Vector2D
     public var health: Int
+    public var facingAngle: Double
 
-    public init(position: Vector2D, health: Int = 100) {
+    public init(position: Vector2D, health: Int = 100, facingAngle: Double = 0) {
         self.position = position
         self.health = health
+        self.facingAngle = facingAngle
     }
 }
 
@@ -83,6 +85,16 @@ public struct GameState {
         let nextX = min(max(player.position.x + dx, 0), arenaSize.x)
         let nextY = min(max(player.position.y + dy, 0), arenaSize.y)
         player.position = Vector2D(x: nextX, y: nextY)
+        if dx != 0 || dy != 0 {
+            player.facingAngle = atan2(dy, dx)
+        }
+    }
+
+    public mutating func aimPlayer(toward target: Vector2D) {
+        let dx = target.x - player.position.x
+        let dy = target.y - player.position.y
+        guard dx != 0 || dy != 0 else { return }
+        player.facingAngle = atan2(dy, dx)
     }
 
     public mutating func addAsteroid(_ asteroid: Asteroid) {
@@ -96,7 +108,10 @@ public struct GameState {
     public mutating func fireProjectile(speed: Double = 500) {
         let projectile = Projectile(
             position: player.position,
-            velocity: Vector2D(x: speed, y: 0)
+            velocity: Vector2D(
+                x: cos(player.facingAngle) * speed,
+                y: sin(player.facingAngle) * speed
+            )
         )
         projectiles.append(projectile)
     }
